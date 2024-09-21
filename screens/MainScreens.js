@@ -1,101 +1,223 @@
 import { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
 import HomeScreen from "./HomeScreen";
-import NotificationsScreen from "./NotificationsScreen";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SafeAreaView } from "react-native-safe-area-context";
-import MeScreen from "./MeScreen";
 import DiscoverScreen from "./DiscoverScreen";
 import AppDrawer from "./AppDrawer";
-import SettingsScreen from "./SettingsScreen";
 import AddScreen from "./AddScreen";
+import MoviePreview from "./MoviePreview";
+
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Image, Pressable, View } from "react-native";
+import ProfileScreen from "./ProfileScreen";
+import { globalStyles } from "@/globalStyleSheet";
+import WatchPartyScreen from "./WatchPartyScreen";
+import LibraryScreen from "./LibraryScreen";
+import JoinSunParty from "./JoinSunParty";
+import SunParty from "./SunParty";
 
 const MainStacks = createNativeStackNavigator();
+const HomeStacks = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Empty = () => null;
 
-const MainTabs = ({ navigation }) => {
+const MainTabs = () => {
   const [unreadCount, setUnreadCount] = useState(3);
   return (
-    <AppDrawer navigation={navigation}>
-      <SafeAreaView style={{ height: "100%" }}>
-        <Tab.Navigator
-          screenOptions={{
+    // <AppDrawer navigation={navigation}>
+    <View
+      style={{
+        height: "100%",
+        backgroundColor: "#0b0b0b",
+      }}
+    >
+      <Tab.Navigator
+        screenOptions={({ navigation }) => ({
+          tabBarStyle: {
+            backgroundColor: "transparent",
+            position: "absolute",
+            height: 109,
+            borderTopWidth: 0,
+            width: 308,
+            left: 41,
+          },
+          tabBarShowLabel: false,
+
+          tabBarBackground: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                position: "absolute",
+                backgroundColor: "rgba(0, 0, 0, 0)",
+              }}
+            >
+              <Image
+                source={require("@/assets/images/tabBar/tabBarShape.png")}
+                style={{
+                  width: 308,
+                  height: 79,
+
+                  backgroundColor: "rgba(0, 0, 0, 0)",
+                }}
+                resizeMode="cover"
+              />
+            </View>
+          ),
+
+          headerShown: true,
+
+          headerStyle: {
+            backgroundColor: "#0b0b0b",
+            shadowColor: "#0b0b0b",
+            height: 122,
+          },
+          headerTitleStyle: {
+            color: "white",
+            fontFamily: "ClashDisplay",
+            fontSize: "22",
+            letterSpacing: "0.28",
+            textTransform: "capitalize",
+          },
+          headerTitleAlign: "left",
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate("ProfileScreen")}
+              title="Info"
+              style={{ padding: 16 }}
+            >
+              <Image
+                source={require("@/assets/images/ProfileIcon.png")}
+                style={{ height: 35, width: 35 }}
+              />
+            </Pressable>
+          ),
+        })}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeNavigator}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Image
+                source={
+                  focused
+                    ? require("@/assets/images/tabBar/homeActive.png") // Image when active
+                    : require("@/assets/images/tabBar/home.png") // Image when inactive
+                }
+                style={{ width: 69, height: 69 }}
+                resizeMode="contain"
+              />
+            ),
             headerShown: false,
-            tabBarActiveTintColor: "#408086",
           }}
-        >
-          <Tab.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="home" size={size} color={color} />
-              ),
-              tabBarLabel: "Home",
-            }}
-          />
+        />
+        <Tab.Screen
+          name="Search"
+          component={DiscoverScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Image
+                source={
+                  focused
+                    ? require("@/assets/images/tabBar/searchActive.png") // Image when active
+                    : require("@/assets/images/tabBar/search.png") // Image when inactive
+                }
+                style={{ width: 69, height: 69 }}
+                resizeMode="contain"
+              />
+            ),
+          }}
+        />
 
-          <Tab.Screen
-            name="Discover"
-            component={DiscoverScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="search" size={size} color={color} />
-              ),
-              tabBarLabel: "Discover",
-            }}
-          />
+        <Tab.Screen
+          name="Watch Party"
+          component={WatchPartyScreen}
+          options={({ navigation }) => ({
+            tabBarIcon: ({ focused }) => (
+              <Image
+                source={
+                  focused
+                    ? require("@/assets/images/tabBar/partyActive.png") // Image when active
+                    : require("@/assets/images/tabBar/party.png") // Image when inactive
+                }
+                style={{ width: 69, height: 69 }}
+                resizeMode="contain"
+              />
+            ),
+            tabBarLabel: "Watch Party",
+            headerRight: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Pressable
+                // onPress={() => navigation.navigate("CreateParty1")}
+                >
+                  <Image
+                    source={require("@/assets/icons/createIcon.png")}
+                    style={{ height: 35, width: 35 }}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => navigation.navigate("ProfileScreen")}
+                  title="Info"
+                  style={{ padding: 16 }}
+                >
+                  <Image
+                    source={require("@/assets/images/ProfileIcon.png")}
+                    style={{ height: 35, width: 35 }}
+                  />
+                </Pressable>
+              </View>
+            ),
+          })}
+        />
 
-          <Tab.Screen
-            name="AddTab"
-            component={Empty} // this is a workaround to show a full screen when this tab is pressed
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons name="add" size={36} color={color} />
-              ),
-              tabBarLabel: () => null,
-            }}
-            listeners={{
-              tabPress: (e) => {
-                e.preventDefault(); // stop default navigation
-                navigation.navigate("Add"); // manually navigate to the stack screen outside of the tab navigators
-              },
-            }}
-          />
-
-          <Tab.Screen
-            name="Inbox"
-            component={NotificationsScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="chatbox" size={size} color={color} />
-              ),
-              tabBarLabel: "Inbox",
-              tabBarBadge: unreadCount,
-            }}
-            listeners={{
-              tabPress: () => {
-                setUnreadCount(null);
-              },
-            }}
-          />
-
-          <Tab.Screen
-            name="SettingsDrawer"
-            component={MeScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="person" size={size} color={color} />
-              ),
-              tabBarLabel: "Me",
-            }}
-          />
-        </Tab.Navigator>
-      </SafeAreaView>
-    </AppDrawer>
+        <Tab.Screen
+          name="Your Library"
+          component={LibraryScreen}
+          options={({ navigation }) => ({
+            tabBarIcon: ({ focused }) => (
+              <Image
+                source={
+                  focused
+                    ? require("@/assets/images/tabBar/libraryActive.png") // Image when active
+                    : require("@/assets/images/tabBar/library.png") // Image when inactive
+                }
+                style={{ width: 69, height: 69 }}
+                resizeMode="contain"
+              />
+            ),
+            tabBarLabel: "Library",
+            headerRight: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Pressable
+                // onPress={() => navigation.navigate("CreateWatchList1")}
+                >
+                  <Image
+                    source={require("@/assets/icons/createIcon.png")}
+                    style={{ height: 35, width: 35 }}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => navigation.navigate("ProfileScreen")}
+                  title="Info"
+                  style={{ padding: 16 }}
+                >
+                  <Image
+                    source={require("@/assets/images/ProfileIcon.png")}
+                    style={{ height: 35, width: 35 }}
+                  />
+                </Pressable>
+              </View>
+            ),
+          })}
+        />
+      </Tab.Navigator>
+    </View>
+    // </AppDrawer>
   );
 };
 
@@ -108,16 +230,38 @@ const MainScreens = () => {
         options={{ headerShown: false }}
       />
       <MainStacks.Screen
-        name="Add"
-        component={AddScreen}
-        options={{ animation: "fade_from_bottom" }}
+        name="JoinSunParty"
+        component={JoinSunParty}
+        options={{ animation: "slide_from_right", headerShown: false }}
       />
       <MainStacks.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{ animation: "fade_from_bottom" }}
+        name="SunParty"
+        component={SunParty}
+        options={{ animation: "slide_from_right", headerShown: false }}
+      />
+      <MainStacks.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{ animation: "slide_from_right", headerShown: false }}
       />
     </MainStacks.Navigator>
+  );
+};
+
+const HomeNavigator = () => {
+  return (
+    <HomeStacks.Navigator>
+      <HomeStacks.Screen
+        name="Homescreen"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStacks.Screen
+        name="MoviePreview"
+        component={MoviePreview}
+        options={{ animation: "slide_from_right", headerShown: false }}
+      />
+    </HomeStacks.Navigator>
   );
 };
 
