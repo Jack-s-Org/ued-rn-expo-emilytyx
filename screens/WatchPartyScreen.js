@@ -51,7 +51,7 @@ const WatchPartyScreen = ({ navigation }) => {
       </View>
       <View style={globalStyles.previewFrame}>
         <Text style={globalStyles.satoita}> You may be interested</Text>
-        <View style={globalStyles.thumbnailFrame}>
+        <View style={[globalStyles.thumbnailFrame, { left: 8 }]}>
           <View
             style={{
               display: "flex",

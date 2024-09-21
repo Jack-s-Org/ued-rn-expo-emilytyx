@@ -19,6 +19,7 @@ import SunParty from "./SunParty";
 
 const MainStacks = createNativeStackNavigator();
 const HomeStacks = createNativeStackNavigator();
+const PartyStacks = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Empty = () => null;
@@ -136,7 +137,7 @@ const MainTabs = () => {
 
         <Tab.Screen
           name="Watch Party"
-          component={WatchPartyScreen}
+          component={PartyNavigator}
           options={({ navigation }) => ({
             tabBarIcon: ({ focused }) => (
               <Image
@@ -262,6 +263,22 @@ const HomeNavigator = () => {
         options={{ animation: "slide_from_right", headerShown: false }}
       />
     </HomeStacks.Navigator>
+  );
+};
+const PartyNavigator = () => {
+  return (
+    <PartyStacks.Navigator>
+      <PartyStacks.Screen
+        name="WatchPartyScreen"
+        component={WatchPartyScreen}
+        options={{ headerShown: false }}
+      />
+      <PartyStacks.Screen
+        name="SunParty"
+        component={MoviePreview}
+        options={{ animation: "slide_from_right", headerShown: false }}
+      />
+    </PartyStacks.Navigator>
   );
 };
 

@@ -198,7 +198,7 @@ const MoviePreview = ({ navigation }) => {
           <Text style={globalStyles.satoita}>Related</Text>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={globalStyles.thumbnailFrame}>
+            <View style={[globalStyles.thumbnailFrame, { paddingBottom: 100 }]}>
               <View style={globalStyles.smallThumbnail}>
                 <Text style={globalStyles.thumbnailTitle} numberOfLines={1}>
                   Close

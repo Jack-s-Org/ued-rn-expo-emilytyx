@@ -33,7 +33,9 @@ const SunParty = ({ navigation }) => {
               bottom: 50,
               left: 7,
               right: 7,
-              // onPress: () => Alert.alert("Corner video is being pressed! "), // do something when corner video is pressed
+              onPress: () => {
+                navigation.navigate("SunParty");
+              }, // do something when corner video is pressed
             }}
             // this is where you customize the main video
             // props list: https://docs.expo.dev/versions/latest/sdk/video-av
@@ -44,7 +46,9 @@ const SunParty = ({ navigation }) => {
               useNativeControls: true,
               resizeMode: "cover",
             }}
-            // onPress={() => Alert.alert("Main video is being pressed! ")} // do something when the main video is long pressed
+            onPress={() => {
+              navigation.navigate("WatchPartyScreen");
+            }} // do something when the main video is long pressed
             style={{ width: 390, height: 217 }}
           />
           {/* <Aftersun source={require("@/assets/videos/AFTERSUNclip.mp4")} /> */}
